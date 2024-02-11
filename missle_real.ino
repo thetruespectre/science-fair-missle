@@ -1,13 +1,17 @@
 #include <Servo.h>
 #include <SR04.h>
 #include <math.h>
+#include <Wire.h>
 
 Servo servo1;
 Servo servo2;
 Servo servo3;
 Servo servo4;
 
-const int trig1 = 2; 
+const int addr1 = 9;
+const int addr2 = 9;
+
+const int trig1 = 2;
 const int trig2 = 4;
 const int trig3 = 7;
 const int trig4 = 8;
@@ -23,8 +27,12 @@ SR04 sonar1 = SR04(echo1, trig1);
 SR04 sonar2 = SR04(echo2, trig2);
 SR04 sonar3 = SR04(echo3, trig3);
 SR04 sonar4 = SR04(echo4, trig4);
-int a;
-float b = 30;
+int a1;
+int a2;
+int a3;
+int a4;
+
+float b = 12;
 
 //do .Distance() for distance. 0 means there's nothing there
 
@@ -41,8 +49,9 @@ void setup() {
   servo2.write(90);
   servo3.write(90);
   servo4.write(90);
-
-  //Wire.begin();
+  
+  Wire.begin();
+  Serial.println("Started");
 }
 
 void loop() {
@@ -50,23 +59,55 @@ void loop() {
   // i copied most of the code (too lazy)
   for(int i=15;i<=165;i++){  
     servo1.write(i);
-    a = sonar1.Distance();// Calls a function for calculating the distance measured by the Ultrasonic sensor for each degree
+    delay(30);
+    a1 = sonar1.Distance();
+    /*
+    a2 = sonar2.Distance();
+    a3 = sonar3.Distance();
+    a4 = sonar4.Distance();
+    */
+    a2, a3, a4 = 0;
     
     //radar(i);
 
-    if (a > 0 && a <= range) {
-      doo(i);
+    if (a1 > 0 && a1 <= range) {
+      doo(i, a1, addr1);
+    }
+    if (a2 > 0 && a2 <= range) {
+      doo(i, a2, addr1);
+    }
+    if (a3 > 0 && a3 <= range) {
+      doo(i, a3, addr2);
+    }
+    if (a4 > 0 && a4 <= range) {
+      doo(i, a4, addr2);
     }
   }
   // Repeats the previous lines from 165 to 15 degrees
   for(int i=165;i>=15;i--){  
     servo1.write(i);
-    a = sonar1.Distance();
+    delay(30);
+    a1 = sonar1.Distance();// Calls a function for calculating the distance measured by the Ultrasonic sensor for each degree
+    /*
+    a2 = sonar2.Distance();
+    a3 = sonar3.Distance();
+    a4 = sonar4.Distance();
+    */
+    a2, a3, a4 = 0;
 
     //radar(i);
 
-    if (a > 0 && a <= range) {
-      doo(i);
+    if (a1 > 0 && a1 <= range) {
+      doo(i, a1, addr1);
+    }
+    if (a2 > 0 && a2 <= range) {
+      doo(i, a2, addr1);
+    }
+    if (a3 > 0 && a3 <= range) {
+      doo(i, a3, addr2);
+    }
+    if (a4 > 0 && a4 <= range) {
+      doo(i, a4, addr2);
     }
   }
 }
@@ -79,7 +120,7 @@ double ang(double radian) {
   return radian*180/M_PI;
 }
 
-void radar(int i) {
+void radar(int i, int a) {
   Serial.print(i); // Sends the current degree into the Serial Port
   Serial.print(","); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
   Serial.print(round(a)); // Sends the distance value into the Serial Port
@@ -87,17 +128,37 @@ void radar(int i) {
 }
 
 
-void doo(int i) {
+void doo(int i, int a, int address) {
+
   double c;
-  double angle;
-  c = sqrt(pow(a, 2) + pow(b, 2) - 2*a*b*cos(rad(i)));
-  angle = ang(acos(
+  double angl;
+  byte angle;
+  c = sqrt(
+    pow(a, 2) + pow(b, 2) - 2*a*b*cos(rad(i))
+    );
+
+
+  angl = ang(asin(
     sin(rad(i))/c*a
   ));
+
+
+
+  angle = round(angl);
+  
   /*
-  Wire.beginTransmission(addr);
-  Wire.write(round(angle));
-  Wire.endTransmission();
+  byte nums[2];
+  nums[0] = (angle >> 8) & 0xFF;
+  nums[1] = angle & 0xFF;
+  Serial.println(nums[0]);
+  Serial.println(nums[1]);
   */
-  Serial.println(round(angle));
+
+
+  
+  Wire.beginTransmission(address);
+  Wire.write(angle);
+  Wire.endTransmission();
+
+  Serial.println(angle);
 }
