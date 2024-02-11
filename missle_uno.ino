@@ -1,5 +1,5 @@
 #include <Servo.h>
-//#include <Wire.h>
+#include <Wire.h>
 
 Servo servo1;
 Servo servo2;
@@ -14,25 +14,32 @@ void setup() {
   servo1.write(90);
   servo2.write(90);
   Serial.begin(9600);
-  //Wire.begin(addr);
+  Wire.begin(addr);
+  Serial.println("started");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //Wire.onReceive(fire);
-  while (Serial.available() > 0){
-    angle = Serial.read();
-    fire();
-  }
+  Wire.onReceive(fire);
 }
 
-void fire() {
+void fire(int f) {
+  Serial.println("FIRING");
   /*
-  while (Wire.available() > 0) {
-    angle = Wire.read();
-  }
+  byte a, b;
+  a = Wire.read();
+  b = Wire.read();
+  Serial.println(a);
+  Serial.println(b);
+
+  angle = a;
+  angle = (angle << 8) | b;
   */
+  angle = Wire.read();
 
   servo1.write(angle);
+  Serial.println(angle);
+  delay(1000);
+  servo1.write(90);
   angle = 0;
 }
