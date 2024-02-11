@@ -16,11 +16,12 @@ void setup() {
   Serial.begin(9600);
   Wire.begin(addr);
   Serial.println("started");
+
+  Wire.onReceive(fire);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Wire.onReceive(fire);
 }
 
 void fire(int f) {
