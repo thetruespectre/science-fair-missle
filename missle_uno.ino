@@ -14,13 +14,14 @@ void setup() {
   servo1.write(90);
   servo2.write(90);
   Serial.begin(9600);
+  
   Wire.begin(addr);
+  Wire.onReceive(fire);
   Serial.println("started");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Wire.onReceive(fire);
 }
 
 void fire(int f) {
