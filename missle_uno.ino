@@ -37,4 +37,6 @@ void fire(int f) {
   //active = true;
   angle = Wire.read();
   flag = true;
+  
+
 }
