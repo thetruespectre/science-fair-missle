@@ -2,22 +2,21 @@
 #include <Wire.h>
 
 Servo servo1;
-Servo servo2;
 int angle = 0;
-bool active;
+bool active = false;
 const int addr = 9;
+
+const int delay1 = 800;
+const int delay2 = 250;
 
 void setup() {
   // put your setup code here, to run once:
   servo1.attach(3);
-  servo2.attach(6);
   servo1.write(90);
-  servo2.write(90);
   Serial.begin(9600);
-  
   Wire.begin(addr);
-  Wire.onReceive(fire);
   Serial.println("started");
+  Wire.onReceive(fire);
 }
 
 void loop() {
@@ -25,22 +24,19 @@ void loop() {
 }
 
 void fire(int f) {
-  Serial.println("FIRING");
-  /*
-  byte a, b;
-  a = Wire.read();
-  b = Wire.read();
-  Serial.println(a);
-  Serial.println(b);
+  if (!active) {
+    active = true;
+    angle = Wire.read();
 
-  angle = a;
-  angle = (angle << 8) | b;
-  */
-  angle = Wire.read();
+    Serial.println(angle);
+    servo1.write(angle);
 
-  servo1.write(angle);
-  Serial.println(angle);
-  delay(1000);
-  servo1.write(90);
-  angle = 0;
+    delay(delay1);
+    servo1.write(90);
+    angle = 0;
+    active = false;
+    delay(delay2)
+  }
+  
+
 }
