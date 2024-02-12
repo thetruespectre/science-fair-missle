@@ -149,4 +149,6 @@ void doo(int i, int a, int address) {
   Wire.beginTransmission(address);
   Wire.write(angle);
   Wire.endTransmission();
+
+  Serial.println(angle);
 }
