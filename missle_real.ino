@@ -68,7 +68,7 @@ void loop() {
     */
     a2, a3, a4 = 0;
     
-    //radar(i);
+    radar(i, a1);
 
     if (a1 > 0 && a1 <= range) {
       doo(i, a1, addr1);
@@ -95,7 +95,7 @@ void loop() {
     */
     a2, a3, a4 = 0;
 
-    //radar(i);
+    radar(i, a1);
 
     if (a1 > 0 && a1 <= range) {
       doo(i, a1, addr1);
@@ -145,16 +145,6 @@ void doo(int i, int a, int address) {
 
 
   angle = round(angl);
-  
-  /*
-  byte nums[2];
-  nums[0] = (angle >> 8) & 0xFF;
-  nums[1] = angle & 0xFF;
-  Serial.println(nums[0]);
-  Serial.println(nums[1]);
-  */
-
-
   
   Wire.beginTransmission(address);
   Wire.write(angle);
