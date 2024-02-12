@@ -32,7 +32,7 @@ int a2;
 int a3;
 int a4;
 
-float b = 12;
+const int b = 12;
 
 //do .Distance() for distance. 0 means there's nothing there
 
@@ -149,6 +149,4 @@ void doo(int i, int a, int address) {
   Wire.beginTransmission(address);
   Wire.write(angle);
   Wire.endTransmission();
-
-  Serial.println(angle);
 }

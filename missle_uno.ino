@@ -5,9 +5,10 @@ Servo servo1;
 int angle = 0;
 bool active = false;
 const int addr = 9;
+bool flag = false;
 
-const int delay1 = 800;
-const int delay2 = 250;
+const int delay1 = 500;
+const int delay2 = 500;
 
 void setup() {
   // put your setup code here, to run once:
@@ -20,23 +21,20 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-void fire(int f) {
-  if (!active) {
-    active = true;
-    angle = Wire.read();
-
-    Serial.println(angle);
+  if (flag) {
     servo1.write(angle);
+    Serial.println(angle);
 
     delay(delay1);
     servo1.write(90);
-    angle = 0;
-    active = false;
-    delay(delay2)
+    delay(delay2);
+    //active = false;
+    flag = false;
   }
-  
+}
 
+void fire(int f) {
+  //active = true;
+  angle = Wire.read();
+  flag = true;
 }
