@@ -3,13 +3,15 @@
 #include <math.h>
 #include <Wire.h>
 
+const int del = 15;
+
 Servo servo1;
 Servo servo2;
 Servo servo3;
 Servo servo4;
 
 const int addr1 = 9;
-const int addr2 = 9;
+const int addr2 = 10;
 
 const int trig1 = 2;
 const int trig2 = 4;
@@ -32,7 +34,7 @@ int a2;
 int a3;
 int a4;
 
-const int b = 12;
+const int b = 17;
 
 //do .Distance() for distance. 0 means there's nothing there
 
@@ -59,16 +61,17 @@ void loop() {
   // i copied most of the code (too lazy)
   for(int i=15;i<=165;i++){  
     servo1.write(i);
-    delay(30);
+    delay(del);
     a1 = sonar1.Distance();
-    /*
     a2 = sonar2.Distance();
     a3 = sonar3.Distance();
     a4 = sonar4.Distance();
-    */
-    a2, a3, a4 = 0;
+    //a2, a3, a4 = 0;
     
     radar(i, a1);
+    radar(i, a2);
+    radar(i, a3);
+    radar(i, a4);
 
     if (a1 > 0 && a1 <= range) {
       doo(i, a1, addr1);
@@ -86,16 +89,17 @@ void loop() {
   // Repeats the previous lines from 165 to 15 degrees
   for(int i=165;i>=15;i--){  
     servo1.write(i);
-    delay(30);
+    delay(del);
     a1 = sonar1.Distance();// Calls a function for calculating the distance measured by the Ultrasonic sensor for each degree
-    /*
     a2 = sonar2.Distance();
     a3 = sonar3.Distance();
     a4 = sonar4.Distance();
-    */
-    a2, a3, a4 = 0;
+    //a2, a3, a4 = 0;
 
     radar(i, a1);
+    radar(i, a2);
+    radar(i, a3);
+    radar(i, a4);
 
     if (a1 > 0 && a1 <= range) {
       doo(i, a1, addr1);
@@ -137,18 +141,14 @@ void doo(int i, int a, int address) {
     pow(a, 2) + pow(b, 2) - 2*a*b*cos(rad(i))
     );
 
-
   angl = ang(asin(
     sin(rad(i))/c*a
   ));
-
-
 
   angle = round(angl);
   
   Wire.beginTransmission(address);
   Wire.write(angle);
   Wire.endTransmission();
-
-  Serial.println(angle);
+  //Serial.println(angle);
 }
