@@ -6,7 +6,7 @@ int angle = 0;
 bool active = false;
 const int addr = 10;
 bool flag = false;
-int on = 2;
+const int on = 2;
 
 const int delay1 = 100;
 const int delay2 = 800;
