@@ -6,12 +6,14 @@ int angle = 0;
 bool active = false;
 const int addr = 10;
 bool flag = false;
+int on = 2;
 
-const int delay1 = 500;
-const int delay2 = 500;
+const int delay1 = 100;
+const int delay2 = 800;
 
 void setup() {
   // put your setup code here, to run once:
+  pinMode(on, OUTPUT);
   servo1.attach(3);
   servo1.write(90);
   Serial.begin(9600);
@@ -26,6 +28,10 @@ void loop() {
     Serial.println(angle);
 
     delay(delay1);
+    digitalWrite(on, HIGH);
+    delay(delay1);
+    digitalWrite(on, LOW);
+
     servo1.write(90);
     delay(delay2);
     //active = false;
@@ -36,5 +42,6 @@ void loop() {
 void fire(int f) {
   //active = true;
   angle = Wire.read();
+  angle = 180 - angle;
   flag = true;
 }
