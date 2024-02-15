@@ -9,7 +9,8 @@ bool flag = false;
 const int on = 2;
 
 const int delay1 = 100;
-const int delay2 = 800;
+const int delay2 = 100;
+const int delay3 = 800;
 
 void setup() {
   // put your setup code here, to run once:
@@ -29,11 +30,11 @@ void loop() {
 
     delay(delay1);
     digitalWrite(on, HIGH);
-    delay(delay1);
+    delay(delay2);
     digitalWrite(on, LOW);
 
     servo1.write(90);
-    delay(delay2);
+    delay(delay3);
     //active = false;
     flag = false;
   }
