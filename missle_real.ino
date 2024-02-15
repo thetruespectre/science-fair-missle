@@ -4,6 +4,9 @@
 #include <Wire.h>
 
 const int del = 15;
+int reset1 = 0;
+int reset2 = 0;
+int resetVal = 250;
 
 Servo servo1;
 Servo servo2;
@@ -86,6 +89,14 @@ void loop() {
       doo(i, a4, addr2);
     }
   }
+
+  if (reset1 > 0) {
+    resetServo(addr1);
+  }
+  if (reset2 > 0) {
+    resetServo(addr2);
+  }
+
   // Repeats the previous lines from 165 to 15 degrees
   for(int i=165;i>=15;i--){  
     servo1.write(i);
@@ -114,6 +125,13 @@ void loop() {
       doo(i, a4, addr2);
     }
   }
+
+  if (reset1 > 0) {
+    resetServo(addr1);
+  }
+  if (reset2 > 0) {
+    resetServo(addr2);
+  }
 }
 
 double rad(int degree) {
@@ -137,6 +155,13 @@ void doo(int i, int a, int address) {
   double c;
   double angl;
   byte angle;
+  
+  if (address == addr1) {
+    reset1++;
+  } else if (address == addr2) {
+    reset2++;
+  }
+
   c = sqrt(
     pow(a, 2) + pow(b, 2) - 2*a*b*cos(rad(i))
     );
@@ -151,4 +176,10 @@ void doo(int i, int a, int address) {
   Wire.write(angle);
   Wire.endTransmission();
   //Serial.println(angle);
+}
+
+void resetServo(int address) {
+  Wire.beginTransmission(address);
+  Wire.write(resetVal);
+  Wire.endTransmission();
 }
