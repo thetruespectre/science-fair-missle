@@ -40,7 +40,7 @@ void serialEvent (Serial myPort) { // starts reading data from the Serial Port
   data = myPort.readStringUntil('.');
   data = data.substring(0,data.length()-1);
   yes = data.substring(0,9);
-  if (yes == "distance1:") {
+  if (yes == "distance4:") {
     data = data.substring(10, data.length());
     
     index1 = data.indexOf(","); // find the character ',' and puts it into the variable "index1"
