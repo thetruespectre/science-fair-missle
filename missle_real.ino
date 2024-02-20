@@ -68,10 +68,10 @@ void loop() {
     a4 = sonar4.Distance();
     //a2, a3, a4 = 0;
     
-    radar(i, a1);
-    radar(i, a2);
-    radar(i, a3);
-    radar(i, a4);
+    radar(i, a1, "distance1:");
+    radar(i, a2, "distance2:");
+    radar(i, a3, "distance3:");
+    radar(i, a4, "distance4:");
 
     if (a1 > 0 && a1 <= range) {
       doo(i, a1, addr1);
@@ -96,10 +96,10 @@ void loop() {
     a4 = sonar4.Distance();
     //a2, a3, a4 = 0;
 
-    radar(i, a1);
-    radar(i, a2);
-    radar(i, a3);
-    radar(i, a4);
+    radar(i, a1, "distance1:");
+    radar(i, a2, "distance2:");
+    radar(i, a3, "distance3:");
+    radar(i, a4, "distance4:");
 
     if (a1 > 0 && a1 <= range) {
       doo(i, a1, addr1);
@@ -124,7 +124,8 @@ double ang(double radian) {
   return radian*180/M_PI;
 }
 
-void radar(int i, int a) {
+void radar(int i, int a, String d) {
+  Serial.print(d);
   Serial.print(i); // Sends the current degree into the Serial Port
   Serial.print(","); // Sends addition character right next to the previous value needed later in the Processing IDE for indexing
   Serial.print(round(a)); // Sends the distance value into the Serial Port
