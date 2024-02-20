@@ -5,8 +5,10 @@ Servo servo1;
 int angle = 0;
 bool active = false;
 const int addr = 10;
-bool flag = false;
 const int on = 2;
+
+bool flag = false;
+bool reset = false;
 
 const int delay1 = 100;
 const int delay2 = 100;
@@ -24,6 +26,11 @@ void setup() {
 }
 
 void loop() {
+  if (reset) {
+    servo1.write(90);
+    reset = false;
+  }
+
   if (flag) {
     servo1.write(angle);
     Serial.println(angle);
@@ -43,6 +50,11 @@ void loop() {
 void fire(int f) {
   //active = true;
   angle = Wire.read();
-  angle = 180 - angle;
-  flag = true;
+  if (angle == 250) {
+    reset = true;
+  }
+  else {
+    angle = 180 - angle;
+    flag = true;
+  }
 }
