@@ -3,7 +3,13 @@
 #include <math.h>
 #include <Wire.h>
 
-const int del = 15;
+const int del = 15; //servo speed
+
+//offsets
+const int ang1 = 50;
+const int ang2 = 50;
+const int ang3 = 50;
+const int ang4 = 50;
 
 Servo servo1;
 Servo servo2;
@@ -74,16 +80,16 @@ void loop() {
     radar(i, a4, "distance4:");
 
     if (a1 > 0 && a1 <= range) {
-      doo(i, a1, addr1);
+      doo(i, a1, addr1, ang1);
     }
     if (a2 > 0 && a2 <= range) {
-      doo(i, a2, addr1);
+      doo(i, a2, addr1, ang2);
     }
     if (a3 > 0 && a3 <= range) {
-      doo(i, a3, addr2);
+      doo(i, a3, addr2, ang3);
     }
     if (a4 > 0 && a4 <= range) {
-      doo(i, a4, addr2);
+      doo(i, a4, addr2, ang4);
     }
   }
   // Repeats the previous lines from 165 to 15 degrees
@@ -102,16 +108,16 @@ void loop() {
     radar(i, a4, "distance4:");
 
     if (a1 > 0 && a1 <= range) {
-      doo(i, a1, addr1);
+      doo(i, a1, addr1, ang1);
     }
     if (a2 > 0 && a2 <= range) {
-      doo(i, a2, addr1);
+      doo(i, a2, addr1, ang2);
     }
     if (a3 > 0 && a3 <= range) {
-      doo(i, a3, addr2);
+      doo(i, a3, addr2, ang3);
     }
     if (a4 > 0 && a4 <= range) {
-      doo(i, a4, addr2);
+      doo(i, a4, addr2, ang4);
     }
   }
 }
@@ -133,20 +139,26 @@ void radar(int i, int a, String d) {
 }
 
 
-void doo(int i, int a, int address) {
+void doo(int i, int a, int address, int offset) {
+
+  double e;
+  if (i + offset <= 180) {
+    e = i + offset;
+  }
 
   double c;
   double angl;
   byte angle;
   c = sqrt(
-    pow(a, 2) + pow(b, 2) - 2*a*b*cos(rad(i))
+    pow(a, 2) + pow(b, 2) - 2*a*b*cos(rad(e))
     );
 
   angl = ang(asin(
-    sin(rad(i))/c*a
+    sin(rad(e))/c*a
   ));
 
   angle = round(angl);
+  angle = angle - offset;
   
   Wire.beginTransmission(address);
   Wire.write(angle);
