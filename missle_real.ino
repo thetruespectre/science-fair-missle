@@ -64,7 +64,6 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  // i copied most of the code (too lazy)
   for(int i=15;i<=165;i++){  
     servo1.write(i);
     delay(del);
@@ -141,14 +140,12 @@ void radar(int i, int a, String d) {
 
 void doo(int i, int a, int address, int offset) {
 
-  double e;
-  if (i + offset <= 180) {
-    e = i + offset;
-  }
+  double e = i + offset;
 
   double c;
   double angl;
   byte angle;
+  
   c = sqrt(
     pow(a, 2) + pow(b, 2) - 2*a*b*cos(rad(e))
     );
@@ -158,10 +155,10 @@ void doo(int i, int a, int address, int offset) {
   ));
 
   angle = round(angl);
-  angle = angle - offset;
-  
-  Wire.beginTransmission(address);
-  Wire.write(angle);
-  Wire.endTransmission();
-  //Serial.println(angle);
+
+  if (angle <= 180) {
+    Wire.beginTransmission(address);
+    Wire.write(angle);
+    Wire.endTransmission();
+  }
 }
