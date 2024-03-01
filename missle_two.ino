@@ -3,39 +3,58 @@
 
 Servo servo1;
 int angle = 0;
-bool active = false;
 const int addr = 10;
 bool flag = false;
-const int on = 2;
 
-const int delay1 = 100; //missle turn
-const int delay2 = 100; //missle shoot
-const int delay3 = 800; //missle reset
+const int gate1 = 2;
+const int gate2 = 4;
+const int gate3 = 5;
+const int gate4 = 6;
+
+const int reload = 8;
+int count = 4;
+
+const int delay1 = 500; //missle turn
+const int delay2 = 150; //missle shoot
+const int delay3 = 3000; //missle reset
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(on, OUTPUT);
+  pinMode(gate1, OUTPUT);
+  pinMode(gate2, OUTPUT);
+  pinMode(gate3, OUTPUT);
+  pinMode(gate4, OUTPUT);
+  pinMode(reload, INPUT_PULLUP);
+  
   servo1.attach(3);
   servo1.write(90);
   Serial.begin(9600);
+  
   Wire.begin(addr);
   Serial.println("started");
   Wire.onReceive(fire);
 }
 
 void loop() {
+  if (digitalRead(reload) == LOW) {
+    count = 4;
+  }
+
   if (flag) {
-    servo1.write(angle);
-    Serial.println(angle);
+    
+    if (count == 4) {
+      shoot(gate1);
+    } else if (count == 3) {
+      shoot(gate2);
+    } else if (count == 2) {
+      shoot(gate3);
+    } else if (count == 1) {
+      shoot(gate4);
+    } else {
+      Serial.println("COUNT ERROR");
+    }
 
-    delay(delay1);
-    digitalWrite(on, HIGH);
-    delay(delay2);
-    digitalWrite(on, LOW);
-
-    servo1.write(90);
-    delay(delay3);
-    //active = false;
+    count -= 1;
     flag = false;
   }
 }
@@ -43,5 +62,18 @@ void loop() {
 void fire(int f) {
   //active = true;
   angle = Wire.read();
-  flag = true;
+  if (count > 0) {
+    flag = true;
+  }
+}
+
+void shoot(int gate) {
+  servo1.write(angle);
+  Serial.println(angle);
+
+  delay(delay1);
+  digitalWrite(gate, HIGH);
+  delay(delay2);
+  digitalWrite(gate, LOW);
+  delay(delay3);
 }
