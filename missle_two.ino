@@ -36,7 +36,7 @@ void setup() {
 
 void loop() {
   if (digitalRead(reload) == LOW) {
-    count = 4;
+    count = 3;
   }
 
   if (flag) {
