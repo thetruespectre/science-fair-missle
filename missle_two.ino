@@ -9,10 +9,9 @@ bool flag = false;
 const int gate1 = 2;
 const int gate2 = 4;
 const int gate3 = 5;
-const int gate4 = 6;
 
 const int reload = 8;
-int count = 4;
+int count = 3;
 
 const int delay1 = 500; //missle turn
 const int delay2 = 150; //missle shoot
@@ -23,7 +22,7 @@ void setup() {
   pinMode(gate1, OUTPUT);
   pinMode(gate2, OUTPUT);
   pinMode(gate3, OUTPUT);
-  pinMode(gate4, OUTPUT);
+
   pinMode(reload, INPUT_PULLUP);
   
   servo1.attach(3);
