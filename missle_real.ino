@@ -40,7 +40,10 @@ int a2;
 int a3;
 int a4;
 
-const int b = 17;
+const float b1 = 17;
+const float b2 = 1;
+const float b3 = 1;
+const float b4 = 1;
 
 //do .Distance() for distance. 0 means there's nothing there
 
@@ -79,16 +82,16 @@ void loop() {
     radar(i, a4, "distance4:");
 
     if (a1 > 0 && a1 <= range) {
-      doo(i, a1, addr1, ang1);
+      doo(i, a1, addr1, ang1, b1);
     }
     if (a2 > 0 && a2 <= range) {
-      doo(i, a2, addr1, ang2);
+      doo(i, a2, addr1, ang2, b2);
     }
     if (a3 > 0 && a3 <= range) {
-      doo(i, a3, addr2, ang3);
+      doo(i, a3, addr2, ang3, b3);
     }
     if (a4 > 0 && a4 <= range) {
-      doo(i, a4, addr2, ang4);
+      doo(i, a4, addr2, ang4, b4);
     }
   }
   // Repeats the previous lines from 165 to 15 degrees
@@ -107,16 +110,16 @@ void loop() {
     radar(i, a4, "distance4:");
 
     if (a1 > 0 && a1 <= range) {
-      doo(i, a1, addr1, ang1);
+      doo(i, a1, addr1, ang1, b1);
     }
     if (a2 > 0 && a2 <= range) {
-      doo(i, a2, addr1, ang2);
+      doo(i, a2, addr1, ang2, b2);
     }
     if (a3 > 0 && a3 <= range) {
-      doo(i, a3, addr2, ang3);
+      doo(i, a3, addr2, ang3, b3);
     }
     if (a4 > 0 && a4 <= range) {
-      doo(i, a4, addr2, ang4);
+      doo(i, a4, addr2, ang4, b4);
     }
   }
 }
@@ -138,7 +141,7 @@ void radar(int i, int a, String d) {
 }
 
 
-void doo(int i, int a, int address, int offset) {
+void doo(int i, int a, int address, int offset, float b) {
 
   double e = i + offset;
 
